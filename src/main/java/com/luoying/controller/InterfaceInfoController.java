@@ -3,10 +3,8 @@ package com.luoying.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.luoying.annotation.AuthCheck;
-import com.luoying.common.BaseResponse;
-import com.luoying.common.DeleteRequest;
-import com.luoying.common.ErrorCode;
-import com.luoying.common.ResultUtils;
+import com.luoying.client.LuoApiClient;
+import com.luoying.common.*;
 import com.luoying.constant.CommonConstant;
 import com.luoying.exception.BusinessException;
 import com.luoying.model.dto.interfaceinfo.InterfaceInfoAddRequest;
@@ -14,6 +12,7 @@ import com.luoying.model.dto.interfaceinfo.InterfaceInfoQueryRequest;
 import com.luoying.model.dto.interfaceinfo.InterfaceInfoUpdateRequest;
 import com.luoying.model.entity.InterfaceInfo;
 import com.luoying.model.entity.User;
+import com.luoying.model.enums.InterfaceInfoStatusEnum;
 import com.luoying.service.InterfaceInfoService;
 import com.luoying.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- * 接口信息
+ * 接口信息管理
  *
  * @author 落樱的悔恨
  */
@@ -40,6 +39,9 @@ public class InterfaceInfoController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private LuoApiClient luoApiClient;
 
     // region 增删改查
 
@@ -105,7 +107,7 @@ public class InterfaceInfoController {
      */
     @PostMapping("/update")
     public BaseResponse<Boolean> updateInterfaceInfo(@RequestBody InterfaceInfoUpdateRequest interfaceInfoUpdateRequest,
-                                            HttpServletRequest request) {
+                                                     HttpServletRequest request) {
         if (interfaceInfoUpdateRequest == null || interfaceInfoUpdateRequest.getId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -194,6 +196,68 @@ public class InterfaceInfoController {
         return ResultUtils.success(interfaceInfoPage);
     }
 
+
+    /**
+     * 发布
+     *
+     * @param idRequest
+     * @param request
+     * @return
+     */
+    @PostMapping("/online")
+    @AuthCheck(mustRole = "admin")
+    public BaseResponse<Boolean> onlineInterfaceInfo(@RequestBody IdRequest idRequest,
+                                                     HttpServletRequest request) {
+        if (idRequest == null || idRequest.getId() <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+
+        // 判断是否存在
+        long id = idRequest.getId();
+        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+        if (oldInterfaceInfo == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        //todo 判断该接口是否可以调用，固定方法名改为根据测试地址来调用
+        com.luoying.model.User user = new com.luoying.model.User();
+        user.setUsername("冉旭");
+        String username = luoApiClient.getUsernameByPost(user);
+        if (StringUtils.isBlank(username)){
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR,"接口验证失败");
+        }
+        //修改接口数据库中接口的状态字段为1
+        oldInterfaceInfo.setStatus(InterfaceInfoStatusEnum.ONLINE.getValue());
+        boolean result = interfaceInfoService.updateById(oldInterfaceInfo);
+        return ResultUtils.success(result);
+    }
+
+    /**
+     * 下线
+     *
+     * @param idRequest
+     * @param request
+     * @return
+     */
+    @PostMapping("/offline")
+    @AuthCheck(mustRole = "admin")
+    public BaseResponse<Boolean> offlineInterfaceInfo(@RequestBody IdRequest idRequest,
+                                                      HttpServletRequest request) {
+        // 参数校验
+        if (idRequest == null || idRequest.getId() <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+
+        long id = idRequest.getId();
+        // 判断是否存在
+        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+        if (oldInterfaceInfo == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        //修改接口数据库中接口的状态字段为1
+        oldInterfaceInfo.setStatus(InterfaceInfoStatusEnum.OFFLINE.getValue());
+        boolean result = interfaceInfoService.updateById(oldInterfaceInfo);
+        return ResultUtils.success(result);
+    }
     // endregion
 
 }
