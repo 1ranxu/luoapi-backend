@@ -2,12 +2,14 @@ package com.luoying.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.google.gson.Gson;
 import com.luoying.annotation.AuthCheck;
 import com.luoying.client.LuoApiClient;
 import com.luoying.common.*;
 import com.luoying.constant.CommonConstant;
 import com.luoying.exception.BusinessException;
 import com.luoying.model.dto.interfaceinfo.InterfaceInfoAddRequest;
+import com.luoying.model.dto.interfaceinfo.InterfaceInfoInvokeRequest;
 import com.luoying.model.dto.interfaceinfo.InterfaceInfoQueryRequest;
 import com.luoying.model.dto.interfaceinfo.InterfaceInfoUpdateRequest;
 import com.luoying.model.entity.InterfaceInfo;
@@ -256,6 +258,43 @@ public class InterfaceInfoController {
         //修改接口数据库中接口的状态字段为1
         oldInterfaceInfo.setStatus(InterfaceInfoStatusEnum.OFFLINE.getValue());
         boolean result = interfaceInfoService.updateById(oldInterfaceInfo);
+        return ResultUtils.success(result);
+    }
+
+    /**
+     * 接口调用
+     *
+     * @param interfaceInfoInvokeRequest
+     * @param request
+     * @return
+     */
+    @PostMapping("/invoke")
+    public BaseResponse<Object> invokeInterfaceInfo(@RequestBody InterfaceInfoInvokeRequest interfaceInfoInvokeRequest,
+                                                     HttpServletRequest request) {
+        // 参数校验
+        if (interfaceInfoInvokeRequest == null || interfaceInfoInvokeRequest.getId() <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+
+        long id = interfaceInfoInvokeRequest.getId();
+        String userRequestParams = interfaceInfoInvokeRequest.getUserRequestParams();
+        // 判断接口是否存在
+        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+        if (oldInterfaceInfo == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        //判断接口状态
+        if (oldInterfaceInfo.getStatus().equals(InterfaceInfoStatusEnum.OFFLINE.getValue())) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"接口未开放");
+        }
+        //判断该用户是否有签名
+        User loginUser = userService.getLoginUser(request);
+        String accessKey = loginUser.getAccessKey();
+        String secretKey = loginUser.getSecretKey();
+        LuoApiClient tempLuoApiClient = new LuoApiClient(accessKey, secretKey);
+        Gson gson=new Gson();
+        com.luoying.model.User user = gson.fromJson(userRequestParams, com.luoying.model.User.class);
+        String result = tempLuoApiClient.getUsernameByPost(user);
         return ResultUtils.success(result);
     }
     // endregion
