@@ -219,12 +219,12 @@ public class InterfaceInfoController {
             throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
         }
         //todo 判断该接口是否可以调用，固定方法名改为根据测试地址来调用
-        com.luoying.model.User user = new com.luoying.model.User();
+        /*com.luoying.model.User user = new com.luoying.model.User();
         user.setUsername("冉旭");
         String username = luoApiClient.getUsernameByPost(user);
         if (StringUtils.isBlank(username)){
             throw new BusinessException(ErrorCode.SYSTEM_ERROR,"接口验证失败");
-        }
+        }*/
         //修改接口数据库中接口的状态字段为1
         oldInterfaceInfo.setStatus(InterfaceInfoStatusEnum.ONLINE.getValue());
         boolean result = interfaceInfoService.updateById(oldInterfaceInfo);

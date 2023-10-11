@@ -70,6 +70,11 @@ public class InterfaceInfo implements Serializable {
     private Date updateTime;
 
     /**
+     * 请求参数
+     */
+    private Date requestParams;
+
+    /**
      * 逻辑删除
      */
     @TableLogic
