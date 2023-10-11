@@ -67,5 +67,5 @@ public class InterfaceInfoQueryRequest extends PageRequest implements Serializab
     /**
      * 请求参数
      */
-    private Date requestParams;
+    private String requestParams;
 }
