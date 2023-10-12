@@ -65,3 +65,37 @@ create table if not exists post_favour
     index idx_postId (postId),
     index idx_userId (userId)
 ) comment '帖子收藏';
+
+
+create table interface_info
+(
+    id             bigint auto_increment comment '主键'
+        primary key,
+    name           varchar(256)                       not null comment '接口名称',
+    description    varchar(1024)                      null comment '接口描述',
+    url            varchar(512)                       not null comment '接口地址',
+    requestParams  text                               null comment '请求参数',
+    requestHeader  text                               null comment '请求头',
+    responseHeader text                               null comment '响应头',
+    status         tinyint  default 0                 not null comment '接口状态 0-关闭 1-开启',
+    method         varchar(256)                       not null comment '请求类型',
+    userId         bigint                             not null comment '创建人',
+    createTime     datetime default CURRENT_TIMESTAMP not null comment '创建时间',
+    updateTime     datetime default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
+    idDelete       tinyint  default 0                 not null comment '逻辑删除'
+);
+
+create table user_interface_info
+(
+    id              bigint auto_increment comment '主键'
+        primary key,
+    userId          bigint                             not null comment '调用者Id',
+    interfaceInfoId bigint                             not null comment '接口id',
+    invokedNum      bigint                             not null comment '已调用次数',
+    leftNum         bigint                             not null comment '剩余调用次数',
+    status          tinyint  default 1                 not null comment '用户状态 0-限制 1-正常',
+    createTime      datetime default CURRENT_TIMESTAMP not null comment '创建时间',
+    updateTime      datetime default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
+    idDelete        tinyint  default 0                 not null comment '逻辑删除'
+
+) comment '用户调用接口关系表';
