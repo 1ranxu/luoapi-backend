@@ -197,8 +197,6 @@ public class UserInterfaceInfoController {
         Page<UserInterfaceInfo> userInterfaceInfoPage = userInterfaceInfoService.page(new Page<>(current, size), queryWrapper);
         return ResultUtils.success(userInterfaceInfoPage);
     }
-
-
     // endregion
 
 }
