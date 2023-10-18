@@ -21,4 +21,11 @@
         invokedNum,leftNum,status,
         createTime,updateTime,idDelete
     </sql>
+    <select id="getTopInvokeInterfaceInfoList" resultType="com.luoying.model.entity.UserInterfaceInfo">
+        select interfaceInfoId,sum(invokedNum) as invokedNum
+        from user_interface_Info
+        group by interfaceInfoId
+        order by invokedNum desc
+        limit #{limit}
+    </select>
 </mapper>
