@@ -10,9 +10,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.yupi</groupId>
-    <artifactId>API-OpenPlatform-backend</artifactId>
+    <artifactId>luoapi-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>API-OpenPlatform-backend</name>
+    <name>luoapi-backend</name>
     <description>springboot 初始项目</description>
     <properties>
         <java.version>1.8</java.version>

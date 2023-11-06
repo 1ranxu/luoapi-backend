@@ -1,6 +1,6 @@
 spring:
   application:
-    name: API-OpenPlatform-backend
+    name: luoapi-backend
   # DataSource Config
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
