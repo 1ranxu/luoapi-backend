@@ -8,8 +8,7 @@
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="userId" column="userId" jdbcType="BIGINT"/>
             <result property="interfaceInfoId" column="interfaceInfoId" jdbcType="BIGINT"/>
-            <result property="invokedNum" column="invokedNum" jdbcType="BIGINT"/>
-            <result property="leftNum" column="leftNum" jdbcType="BIGINT"/>
+            <result property="totalInvokes" column="totalInvokes" jdbcType="BIGINT"/>
             <result property="status" column="status" jdbcType="TINYINT"/>
             <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
@@ -18,14 +17,7 @@
 
     <sql id="Base_Column_List">
         id,userId,interfaceInfoId,
-        invokedNum,leftNum,status,
-        createTime,updateTime,idDelete
+        totalInvokes,status,createTime,
+        updateTime,idDelete
     </sql>
-    <select id="getTopInvokeInterfaceInfoList" resultType="com.luoying.model.entity.UserInterfaceInfo">
-        select interfaceInfoId,sum(invokedNum) as invokedNum
-        from user_interface_Info
-        group by interfaceInfoId
-        order by invokedNum desc
-        limit #{limit}
-    </select>
 </mapper>

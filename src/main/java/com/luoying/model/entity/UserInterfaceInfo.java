@@ -7,7 +7,7 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * 用户调用接口关系表
+ * 用户接口调用表
  * @TableName user_interface_info
  */
 @TableName(value ="user_interface_info")
@@ -30,17 +30,12 @@ public class UserInterfaceInfo implements Serializable {
     private Long interfaceInfoId;
 
     /**
-     * 已调用次数
+     * 总调用次数
      */
-    private Long invokedNum;
+    private Long totalInvokes;
 
     /**
-     * 剩余调用次数
-     */
-    private Long leftNum;
-
-    /**
-     * 用户状态 0-限制 1-正常
+     * 调用状态 0-限制 1-正常
      */
     private Integer status;
 

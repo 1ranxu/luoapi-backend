@@ -1,17 +1,16 @@
 package com.luoying.model.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
-import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import lombok.Data;
 
 /**
  * 用户
- *
  * @TableName user
  */
-@TableName(value = "user")
+@TableName(value ="user")
 @Data
 public class User implements Serializable {
     /**
@@ -36,12 +35,17 @@ public class User implements Serializable {
     private String userAvatar;
 
     /**
-     * 性别
+     * 邮箱
+     */
+    private String email;
+
+    /**
+     * 性别 0-男 1-女
      */
     private Integer gender;
 
     /**
-     * 用户角色: user, admin
+     * 用户角色：user/admin/ban
      */
     private String userRole;
 
@@ -51,14 +55,9 @@ public class User implements Serializable {
     private String userPassword;
 
     /**
-     * 创建时间
+     * 用户简介
      */
-    private Date createTime;
-
-    /**
-     * 更新时间
-     */
-    private Date updateTime;
+    private String userProfile;
 
     /**
      * accessKey
@@ -69,6 +68,21 @@ public class User implements Serializable {
      * secretKey
      */
     private String secretKey;
+
+    /**
+     * 积分余额,注册送30积分
+     */
+    private Long score;
+
+    /**
+     * 创建时间
+     */
+    private Date createTime;
+
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
 
     /**
      * 是否删除
