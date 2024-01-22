@@ -9,7 +9,7 @@ import com.luoying.service.InterfaceInfoService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.util.Objects;
 
 /**
  * @author 落樱的悔恨
@@ -21,20 +21,35 @@ public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, I
         implements InterfaceInfoService {
     @Override
     public void validInterfaceInfo(InterfaceInfo interfaceInfo, boolean add) {
-        Long id = interfaceInfo.getId();
-        String name = interfaceInfo.getName();
-
+        // 判空
         if (interfaceInfo == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        // 创建时，所有参数必须非空
-        if (add) {
-            if (StringUtils.isAnyBlank(name)) {
+        // 获取参数
+        String name = interfaceInfo.getName();
+        String url = interfaceInfo.getUrl();
+        String method = interfaceInfo.getMethod();
+        Long reduceScore = interfaceInfo.getReduceScore();
+        String description = interfaceInfo.getDescription();
+        if (add) {// 创建时，必要参数必须非空
+            if (StringUtils.isAnyBlank(name,url,method)) {
                 throw new BusinessException(ErrorCode.PARAMS_ERROR);
             }
         }
-        if (StringUtils.isAnyBlank(name) && name.length() > 50) {
+        if (StringUtils.isNotBlank(name) && name.length() > 50) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "接口名称过长");
+        }
+        if (StringUtils.isNotBlank(url)) {
+            interfaceInfo.setUrl(url.trim());
+        }
+        if (StringUtils.isNotBlank(method)) {
+            interfaceInfo.setMethod(method.trim().toUpperCase());
+        }
+        if (Objects.nonNull(reduceScore) && reduceScore < 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "扣减积分个数不能小于0");
+        }
+        if (StringUtils.isNotBlank(description) && description.length() > 100) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "接口描述过长");
         }
     }
 }

@@ -3,21 +3,28 @@ package com.luoying.model.dto.interfaceinfo;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 接口调用请求
- *
- * @TableName product
  */
 @Data
 public class InterfaceInfoInvokeRequest implements Serializable {
     /**
-     * 主键
+     * 接口id
      */
     private Long id;
 
     /**
-     * 用户请求参数
+     * 请求参数
      */
-    private String userRequestParams;
+    private List<Field> requestParams;
+
+    @Data
+    public static class Field {
+        private String fieldName;
+        private String value;
+    }
+
+    private static final long serialVersionUID = 1L;
 }

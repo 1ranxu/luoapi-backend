@@ -13,7 +13,7 @@ public interface InterfaceInfoService extends IService<InterfaceInfo> {
     /**
      * 校验
      *
-     * @param interfaceInfo
+     * @param interfaceInfo 接口信息
      * @param add 是否为创建校验
      */
     void validInterfaceInfo(InterfaceInfo interfaceInfo, boolean add);

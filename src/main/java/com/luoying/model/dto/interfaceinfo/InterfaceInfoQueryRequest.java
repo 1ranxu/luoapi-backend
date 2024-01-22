@@ -10,9 +10,10 @@ import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
- * 查询请求
+ * 接口查询请求
  *
  * @author 落樱的悔恨
  */
@@ -20,7 +21,7 @@ import java.util.Date;
 @Data
 public class InterfaceInfoQueryRequest extends PageRequest implements Serializable {
     /**
-     * id
+     * 主键
      */
     private Long id;
 
@@ -30,42 +31,29 @@ public class InterfaceInfoQueryRequest extends PageRequest implements Serializab
     private String name;
 
     /**
-     * 接口描述
-     */
-    private String description;
-
-    /**
      * 接口地址
      */
     private String url;
 
     /**
-     * 请求头
+     * 扣减积分数
      */
-    private String requestHeader;
+    private Long reduceScore;
 
     /**
-     * 响应头
+     * 接口描述
      */
-    private String responseHeader;
+    private String description;
+
+    /**
+     * 请求方法
+     */
+    private String method;
 
     /**
      * 接口状态 0-关闭 1-开启
      */
     private Integer status;
 
-    /**
-     * 请求类型
-     */
-    private String method;
-
-    /**
-     * 创建人
-     */
-    private Long userId;
-
-    /**
-     * 请求参数
-     */
-    private String requestParams;
+    private static final long serialVersionUID = 1L;
 }
