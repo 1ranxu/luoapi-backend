@@ -47,6 +47,10 @@ public class UserUpdateRequest implements Serializable {
      */
     private String userPassword;
 
-    @TableField(exist = false)
+    /**
+     * 积分余额
+     */
+    private Long score;
+
     private static final long serialVersionUID = 1L;
 }

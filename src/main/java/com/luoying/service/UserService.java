@@ -2,7 +2,9 @@ package com.luoying.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.luoying.model.dto.user.*;
 import com.luoying.model.entity.User;
+import com.luoying.model.vo.UserVO;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,46 +16,56 @@ import javax.servlet.http.HttpServletRequest;
 public interface UserService extends IService<User> {
 
     /**
-     * 用户注册
-     *
-     * @param userAccount   用户账户
-     * @param userPassword  用户密码
-     * @param checkPassword 校验密码
-     * @return 新用户 id
+     * 普通账号注册
      */
-    long userRegister(String userAccount, String userPassword, String checkPassword);
+    long userRegister(UserRegisterRequest userRegisterRequest);
 
     /**
-     * 用户登录
+     * 邮箱账号注册
+     */
+    long userEmailRegister(UserEmailRegisterRequest userEmailRegisterRequest);
+
+    /**
+     * 普通账号登录
      *
-     * @param userAccount  用户账户
-     * @param userPassword 用户密码
-     * @param request
      * @return 脱敏后的用户信息
      */
-    User userLogin(String userAccount, String userPassword, HttpServletRequest request);
+    UserVO userLogin(UserLoginRequest userLoginRequest, HttpServletRequest request);
+
+    /**
+     * 邮箱账号登录
+     *
+     * @return 脱敏后的用户信息
+     */
+    UserVO userEmailLogin(UserEmailLoginRequest userEmailLoginRequest, HttpServletRequest request);
+
+    /**
+     * 用户登出
+     */
+    boolean userLogout(HttpServletRequest request);
 
     /**
      * 获取当前登录用户
-     *
-     * @param request
-     * @return
      */
-    User getLoginUser(HttpServletRequest request);
+    UserVO getLoginUser(HttpServletRequest request);
 
     /**
      * 是否为管理员
-     *
-     * @param request
-     * @return
      */
     boolean isAdmin(HttpServletRequest request);
 
     /**
-     * 用户注销
-     *
-     * @param request
-     * @return
+     * 更新凭证
      */
-    boolean userLogout(HttpServletRequest request);
+    UserVO updateVoucher(UserVO loginUser);
+
+    /**
+     * 绑定邮箱
+     */
+    UserVO userBindEmail(UserBindEmailRequest userBindEmailRequest, UserVO loginUser);
+
+    /**
+     * 解除邮箱绑定
+     */
+    UserVO userUnBindEmail(UserUnBindEmailRequest userUnBindEmailRequest, UserVO loginUser);
 }

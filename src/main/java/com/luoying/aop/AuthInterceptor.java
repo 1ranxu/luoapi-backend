@@ -5,6 +5,7 @@ import com.luoying.annotation.AuthCheck;
 import com.luoying.common.ErrorCode;
 import com.luoying.exception.BusinessException;
 import com.luoying.model.entity.User;
+import com.luoying.model.vo.UserVO;
 import com.luoying.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -48,7 +49,7 @@ public class AuthInterceptor {
         RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
         HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
         // 当前登录用户
-        User user = userService.getLoginUser(request);
+        UserVO user = userService.getLoginUser(request);
         // 拥有任意权限即通过
         if (CollectionUtils.isNotEmpty(anyRole)) {
             String userRole = user.getUserRole();

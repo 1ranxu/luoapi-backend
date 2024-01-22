@@ -5,31 +5,26 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * 普通账号注册请求
+ * 邮箱账号注册请求
  *
  * @author 落樱的悔恨
  */
 @Data
-public class UserRegisterRequest implements Serializable {
+public class UserEmailRegisterRequest implements Serializable {
     /**
      * 用户昵称
      */
     private String userName;
 
     /**
-     * 账号
+     * 邮箱
      */
-    private String userAccount;
+    private String emailAccount;
 
     /**
-     * 密码
+     * 验证码
      */
-    private String userPassword;
-
-    /**
-     * 二次密码
-     */
-    private String checkPassword;
+    private String captcha;
 
     private static final long serialVersionUID = 1L;
 }
