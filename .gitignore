@@ -1,3 +1,4 @@
+application-prod.properties
 
 ### IntelliJ project files
 .idea/
@@ -65,7 +66,6 @@ Temporary Items
 
 CodeGenerator.java
 TestController.java
-application-prod.properties
 application-my-prod.properties
 application-remote-prod.properties
 application-my-test.properties
