@@ -33,5 +33,5 @@ public interface EmailConstant {
     /**
      * 平台地址
      */
-    String PLATFORM_ADDRESS = "<a href='https://luoapi.icu/'>请联系我们</a>";
+    String PLATFORM_ADDRESS = "<a href='http://luoapi.icu/'>请联系我们</a>";
 }
