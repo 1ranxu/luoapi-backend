@@ -71,3 +71,4 @@ application-remote-prod.properties
 application-my-test.properties
 /*/rebel.xml
 
+application-prod.properties
