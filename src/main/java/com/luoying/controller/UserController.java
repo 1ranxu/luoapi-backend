@@ -253,6 +253,7 @@ public class UserController {
     @PostMapping("/update")
     @Transactional(rollbackFor = Exception.class)
     public BaseResponse<Boolean> updateUser(@RequestBody UserUpdateRequest userUpdateRequest, HttpServletRequest request) {
+        // 校验
         if (userUpdateRequest == null || userUpdateRequest.getId() == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -261,6 +262,7 @@ public class UserController {
         if (!userUpdateRequest.getId().equals(loginUser.getId()) && !UserConstant.ADMIN_ROLE.equals(loginUser.getUserRole())) {
             throw new BusinessException(ErrorCode.NO_AUTH_ERROR, "只有本人或管理员可以修改");
         }
+        // 拷贝
         User user = new User();
         BeanUtils.copyProperties(userUpdateRequest, user);
         // 加密

@@ -1,4 +1,5 @@
 application-prod.properties
+application-dev.properties
 
 ### IntelliJ project files
 .idea/
