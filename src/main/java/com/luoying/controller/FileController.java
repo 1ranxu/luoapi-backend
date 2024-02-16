@@ -83,7 +83,7 @@ public class FileController {
             return ResultUtils.success(imageVo);
         } catch (Exception e) {
             log.error("file upload error, filepath = " + filepath, e);
-            return uploadError(imageVo, multipartFile, "上传失败,情重试");
+            return uploadError(imageVo, multipartFile, "上传失败,请重试");
         } finally {
             if (file != null) {
                 // 删除临时文件
@@ -103,7 +103,6 @@ public class FileController {
     }
 
     /**
-     * 有效文件
      * 校验文件
      *
      * @param fileUploadBizEnum 业务类型
@@ -114,7 +113,7 @@ public class FileController {
         long fileSize = multipartFile.getSize();
         // 文件后缀
         String fileSuffix = FileUtil.getSuffix(multipartFile.getOriginalFilename());
-        if (FileUploadBizEnum.USER_AVATAR.equals(fileUploadBizEnum)) {
+        if (FileUploadBizEnum.USER_AVATAR.equals(fileUploadBizEnum)) {// 用户头像业务
             if (fileSize > ONE_M) {
                 return "文件大小不能超过 1M";
             }
